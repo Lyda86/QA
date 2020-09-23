@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "8aa583ad-8e4e-4e33-9052-9fa3a1d1b057",
+		"name": "QA bootcamp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6baed3a1-bee1-40d8-b436-8f38b1fdc352",
+						"exec": [
+							"let responseJson;\r",
+							"\r",
+							"pm.test(\"Status test\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response body data\", function(){   \r",
+							"     responseJson = pm.response.json();   \r",
+							" pm.expect(responseJson).to.have.property(\"wallet_id\")});\r",
+							" \r",
+							" pm.globals.set(\"wallet_id\", responseJson.wallet_id);\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{root}}create/wallet",
+					"host": [
+						"{{root}}create"
+					],
+					"path": [
+						"wallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"wallet_id\":\"BTCv79WWnejRW7hbqk5nhV14t573rPE9ic6ENECxFZ4tJBLB6iiKo\"\r\n}"
+				},
+				"url": {
+					"raw": "https://api.bitaps.com/btc/v1/create/wallet/payment/address",
+					"protocol": "https",
+					"host": [
+						"api",
+						"bitaps",
+						"com"
+					],
+					"path": [
+						"btc",
+						"v1",
+						"create",
+						"wallet",
+						"payment",
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.bitaps.com/btc/v1/wallet/state/{{wallet_id}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"bitaps",
+						"com"
+					],
+					"path": [
+						"btc",
+						"v1",
+						"wallet",
+						"state",
+						"{{wallet_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DZ1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3cc4d8a5-9190-4b2e-8301-9a1f5857f9df",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{root}}wallet/daily/statistic/{{wallet_id}}?page=5",
+					"host": [
+						"{{root}}wallet"
+					],
+					"path": [
+						"daily",
+						"statistic",
+						"{{wallet_id}}"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DZ2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3079e1c5-ae35-4542-a85f-fd8d33447294",
+						"exec": [
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{root}}wallet/addresses/{{wallet_id}}?limit=50&from=1600806000&to=1600891200&page=1",
+					"host": [
+						"{{root}}wallet"
+					],
+					"path": [
+						"addresses",
+						"{{wallet_id}}"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "50"
+						},
+						{
+							"key": "from",
+							"value": "1600806000"
+						},
+						{
+							"key": "to",
+							"value": "1600891200"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DZ3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d56d94b-9a7c-4050-a6b9-26fd0cca8aff",
+						"exec": [
+							"pm.test(\"response must be valid and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{root}}wallet/transactions/{{wallet_id}}?page=1&limit=1",
+					"host": [
+						"{{root}}wallet"
+					],
+					"path": [
+						"transactions",
+						"{{wallet_id}}"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "d93d5937-1c60-4eeb-aead-4fe9ed7e62eb",
+			"key": "root",
+			"value": "https://api.bitaps.com/btc/v1/"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
